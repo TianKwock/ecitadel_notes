@@ -56,6 +56,11 @@ sudo mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
 sudo aide --check
 ```
 
+Process / network inspection:
+
+```
+ps -ef | grep sshd
+
 
 
 
