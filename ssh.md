@@ -1,6 +1,6 @@
 # Installing SSH server on RHEL-based systems
 
-### Step x: Check if installed
+### Step 1: Check if installed
 
 ``` sudo dnf list installed | grep openssh-server ```
 
@@ -8,7 +8,7 @@ if not installed:
 
 ``` sudo dnf install -y openssh-server ```
 
-### Step x: Enable and start 
+### Step 2: Enable and start 
 
 ``` sudo systemctl enable sshd ```
 
@@ -16,7 +16,7 @@ if not installed:
 
 ``` sudo systemctl status sshd ```
 
-### Step x: Adjust firewall if necessary
+### Step 3: Adjust firewall if necessary
 
 ``` sudo firewall-cmd --state ```
 
@@ -26,13 +26,13 @@ if not installed:
 
 ``` sudo firewall-cmd --list-all ``` 
 
-### Step x: Test access
+### Step 4: Test access
 
 on another machine:
 
 ``` ssh <user>@<ip> ```
 
-### Step x: Harden 
+### Step 5: Harden 
 
 ``` sudo nano /etc/ssh/sshd_config ```
 
@@ -67,7 +67,7 @@ Start and enable: ``` sudo systemctl enable --now fail2ban ```
 
 Check Banned IPs: ``` sudo fail2ban-client status sshd ```
 
-### Step x: Monitor
+### Step 6: Monitor
 
 Monitor /var/log/secure: ``` sudo tail -F /var/log/secure | grep --line-buffered -E "Failed password|Invalid user|Accepted password|Accepted publickey" ```
 
