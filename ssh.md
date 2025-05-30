@@ -38,9 +38,34 @@ on another machine:
 
 Diable root login: ``` PermitRootLogin no ```
 
+Use Protocol 2 only: ``` Protocol 2 ```
+
 ONLY IF SENSIBLE: Enable only key-based auth: ``` Passwordauthentication no ``` 
 
+Counter brute force: ``` MaxAuthTries 3 ```
+
+Counter DoS: ``` MaxSessions 2 ``` and ``` LoginGraceTime 30 ```
+
 ``` sudo systemctl restart sshd ```
+
+Fail2Ban:
+
+Check the port: ``` Port 22 ```
+
+```
+sudo dnf install -y fail2ban
+sudo tee /etc/fail2ban/jail.d/ssh.local <<'EOF'
+[sshd]
+enabled = true
+port = 22
+maxretry = 3
+bantime = 1800
+EOF
+```
+
+Start and enable: ``` sudo systemctl enable --now fail2ban ```
+
+Check Banned IPs: ``` sudo fail2ban-client status sshd ```
 
 ### Step x: Monitor
 
@@ -56,10 +81,19 @@ sudo mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
 sudo aide --check
 ```
 
-Process / network inspection:
+#### Process / network inspection:
 
-```
-ps -ef | grep sshd
+List sshd processes and their parent / children: ``` ps -ef | grep sshd ``` or ``` ps -eFH | less ```
+
+Show listening ports and processes: ``` sudo ss -tulpn | grep ssh ```
+
+Check for reverse shells: ``` sudo lsof -iTCP -P -n | grep sshd ```
+
+---
+
+Check if recently modified: ``` sudo stat /etc/passwd /etc/group /etc/sudoers ``` 
+
+Check for new authorized keys: ``` sudo grep -R --include=authorized_keys "" /home/* ```
 
 
 
