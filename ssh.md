@@ -67,6 +67,8 @@ Start and enable: ``` sudo systemctl enable --now fail2ban ```
 
 Check Banned IPs: ``` sudo fail2ban-client status sshd ```
 
+To unban: ``` sudo fail2ban-client set sshd unbanip [ip] ```
+
 ### Step 6: Backups
 
 Back up important files:
