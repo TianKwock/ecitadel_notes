@@ -50,7 +50,7 @@ Counter DoS: ``` MaxSessions 2 ``` and ``` LoginGraceTime 30 ```
 
 Fail2Ban:
 
-Check the port: ``` Port 22 ```
+Check the port: ``` ss -tln | grep :22 ```
 
 ```
 sudo dnf install -y fail2ban
