@@ -67,7 +67,32 @@ Start and enable: ``` sudo systemctl enable --now fail2ban ```
 
 Check Banned IPs: ``` sudo fail2ban-client status sshd ```
 
-### Step 6: Monitor
+### Step 6: Backups
+
+Back up important files:
+
+```
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak.$(date +%F_%T)
+sudo cp /etc/passwd /etc/passwd.bak.$(date +%F_%T)
+sudo cp /etc/group /etc/group.bak.$(date +%F_%T)
+sudo cp /etc/sudoers /etc/sudoers.bak.$(date +%F_%T)
+```
+
+Check for differences:
+
+``` sudo diff [config path] [backup path] ```
+
+``` sha256sum [config path] [backup path] ```
+
+Reverting to backups:
+
+```
+sudo cp [backup path] [config path]
+sudo sshd -t
+sudo systemctl restart sshd
+```
+
+### Step 7: Monitor
 
 Monitor /var/log/secure: ``` sudo tail -F /var/log/secure | grep --line-buffered -E "Failed password|Invalid user|Accepted password|Accepted publickey" ```
 
@@ -95,9 +120,4 @@ Check if recently modified: ``` sudo stat /etc/passwd /etc/group /etc/sudoers ``
 
 Check for new authorized keys: ``` sudo grep -R --include=authorized_keys "" /home/* ```
 
-
-
-
-
-
-
+Check for suspicious allowed users: ``` sudo grep -i 'AllowUsers' /etc/ssh/sshd_config ``` for a quick search or ``` sudo grep -Ri 'AllowUsers' /etc/ssh/ ``` for a deeper search
